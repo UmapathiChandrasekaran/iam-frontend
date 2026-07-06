@@ -1,0 +1,116 @@
+/* Core viewport layout container */
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #0a0b10; /* Deep midnight-cyber background */
+  color: #e2e8f0;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Header Text Layout */
+header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+header h1 {
+  color: #00ffcc; /* Neon cyan terminal color */
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+}
+
+header p {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Grid Wrapper for the Access Profile Cards */
+.gateway-container {
+  display: flex;
+  gap: 2rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Individual Interactive Access Profile Card */
+.access-card {
+  flex: 1;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.access-card:hover {
+  transform: translateY(-5px);
+  border-color: #00ffcc;
+  box-shadow: 0 10px 25px rgba(0, 255, 204, 0.1);
+}
+
+/* Card Titles */
+.access-card h2 {
+  font-size: 1.2rem;
+  margin-top: 0;
+  letter-spacing: 1px;
+}
+
+/* Color Coding for Access Priorities */
+.access-card.admin h2 { color: #f43f5e; /* Cyber punk crimson rose for admin */ }
+.access-card.user h2 { color: #3b82f6; /* Tactical blue for user audit portal */ }
+
+/* Capabilities list layouts */
+.capabilities {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+/* Action Execution Buttons */
+.action-btn {
+  background: transparent;
+  border: 1px solid;
+  padding: 0.75rem;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.admin .action-btn {
+  border-color: #f43f5e;
+  color: #f43f5e;
+}
+.admin .action-btn:hover {
+  background: #f43f5e;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+}
+
+.user .action-btn {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+.user .action-btn:hover {
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+}

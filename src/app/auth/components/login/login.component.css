@@ -1,0 +1,1212 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #020308;
+    overflow: hidden;
+    position: relative;
+}
+
+.cinematic-viewport {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.night-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: #05060e;
+    overflow: hidden;
+}
+
+.scene {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 10;
+}
+
+/* ══════════════════════════════════════════════════════════
+   🎬 FASTER & MORE REALISTIC CINEMATIC INTRO 
+   ══════════════════════════════════════════════════════════ */
+.intro-sequence {
+    position: fixed;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Redesigned to look like a glowing, jagged plasma beam */
+.intro-bolt {
+    position: absolute;
+    width: 0;
+    height: 8px;
+    background: radial-gradient(ellipse at center, #ffffff 0%, #00e5ff 30%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px 5px #00e5ff, 0 0 40px 15px #0055ff, 0 0 80px 30px rgba(0, 85, 255, 0.5);
+    opacity: 0;
+    animation: plasmaStrike 0.5s cubic-bezier(0.1, 1, 0.1, 1) forwards;
+    transform: rotate(-10deg);
+    mix-blend-mode: screen;
+    filter: brightness(1.5);
+}
+
+.intro-bolt::before,
+.intro-bolt::after {
+    content: '';
+    position: absolute;
+    height: 4px;
+    background: radial-gradient(ellipse at center, #ffffff 0%, #00e5ff 40%, transparent 100%);
+    border-radius: 50%;
+    box-shadow: inherit;
+}
+
+.intro-bolt::before {
+    top: -15px;
+    left: 15%;
+    width: 35%;
+    transform: rotate(18deg);
+}
+
+.intro-bolt::after {
+    top: 15px;
+    right: 20%;
+    width: 25%;
+    transform: rotate(-15deg);
+}
+
+.intro-energy {
+    position: absolute;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 229, 255, 0.8) 15%, transparent 60%);
+    box-shadow: 0 0 60px 30px #0055ff, inset 0 0 40px 20px #00e5ff;
+    opacity: 0;
+    animation: energyNova 1.2s 0.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+    mix-blend-mode: screen;
+}
+
+@keyframes plasmaStrike {
+    0% {
+        width: 0;
+        opacity: 0;
+        transform: rotate(-10deg) scaleY(0.1);
+    }
+
+    10% {
+        width: 60vw;
+        opacity: 1;
+        transform: rotate(-10deg) scaleY(1.5);
+        filter: brightness(2);
+    }
+
+    20% {
+        opacity: 0.5;
+        transform: rotate(-10deg) scaleY(0.8);
+    }
+
+    30% {
+        width: 80vw;
+        opacity: 1;
+        transform: rotate(-10deg) scaleY(2);
+    }
+
+    40% {
+        opacity: 0.8;
+    }
+
+    100% {
+        width: 100vw;
+        opacity: 0;
+        transform: rotate(-10deg) scaleY(0);
+    }
+}
+
+@keyframes energyNova {
+    0% {
+        transform: scale(0.1);
+        opacity: 1;
+        filter: blur(2px);
+    }
+
+    30% {
+        opacity: 1;
+        filter: blur(5px);
+    }
+
+    100% {
+        transform: scale(10);
+        opacity: 0;
+        filter: blur(20px);
+    }
+}
+
+/* Adjusted delays to make the entrance much faster */
+.login-card-cinematic {
+    opacity: 0;
+    animation: formRiseEntrance 0.8s 0.6s ease-out forwards;
+    z-index: 10;
+}
+
+.cinematic-dragon {
+    opacity: 0;
+    animation: dragonFadeIn 1.5s 0.8s forwards;
+}
+
+.thunder-flash {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    z-index: 9;
+    pointer-events: none;
+    opacity: 0;
+    animation: thunderStrike 2s forwards;
+}
+
+@keyframes formRiseEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes thunderStrike {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    15% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.6;
+    }
+
+    40% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes dragonFadeIn {
+    0% {
+        opacity: 0;
+        filter: drop-shadow(0 0 0 transparent);
+    }
+
+    30% {
+        opacity: 1;
+        filter: drop-shadow(0 0 40px #00e5ff);
+    }
+
+    60% {
+        opacity: 0.8;
+        filter: drop-shadow(0 0 10px #0055ff);
+    }
+
+    100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 4px #00e5ff) drop-shadow(0 0 8px #0055ff);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   🐉 TOOTHLESS FACE/HEAD
+   ══════════════════════════════════════════════════════════ */
+.t1-toothless-wrapper {
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: auto;
+    pointer-events: none;
+    z-index: 15;
+    transition: opacity 0.3s ease;
+}
+
+.t1-toothless-wrapper.hiding {
+    opacity: 0.3 !important;
+    filter: drop-shadow(0 0 0 transparent) !important;
+    transform: translateX(-50%) !important;
+}
+
+.t1-box {
+    position: absolute;
+    left: 50%;
+    top: -330px;
+    transform: translateX(-50%) scale(0.42);
+    transform-origin: center top;
+    height: 800px;
+    width: 700px;
+}
+
+.t1-head {
+    position: absolute;
+    width: 80%;
+    height: 50%;
+    top: 10%;
+    left: 10%;
+    background: #27292D;
+    border-radius: 50% 50% 30% 30%;
+}
+
+.t1-chin {
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 97.4%;
+    left: 17.5%;
+    border-top: 40px solid #27292D;
+    border-bottom: 180px solid transparent;
+    border-right: 175px solid transparent;
+    border-left: 175px solid transparent;
+    z-index: 0;
+}
+
+.t1-head-copy {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #27292D;
+    border-radius: 50% 50% 30% 30%;
+    transform: rotateX(12deg);
+    z-index: 1;
+    box-shadow: inset -35px 50px 55px 0 rgba(4, 7, 25, .5), inset 10px 10px 15px 0 rgba(4, 7, 25, .5), inset -10px 10px 15px 0 rgba(4, 7, 25, .5), inset 2px 20px 30px 0 rgba(255, 255, 255, .2);
+}
+
+.t1-spikes {
+    position: absolute;
+    width: 16%;
+    height: 42%;
+    left: 42%;
+    top: -2%;
+    z-index: 4;
+}
+
+.t1-one {
+    top: -22%;
+    width: 55%;
+    height: 55%;
+    left: 22.5%;
+}
+
+.t1-two {
+    top: -2%;
+    width: 50%;
+    height: 52%;
+    left: 25%;
+}
+
+.t1-three {
+    top: 12%;
+    width: 46%;
+    height: 48%;
+    left: 27%;
+}
+
+.t1-four {
+    top: 30%;
+    width: 42%;
+    height: 44%;
+    left: 29%;
+}
+
+.t1-five {
+    top: 49%;
+    width: 38%;
+    height: 40%;
+    left: 31%;
+}
+
+.t1-ear-left {
+    position: absolute;
+    width: 20%;
+    height: 85%;
+    top: -35%;
+    left: 3.7%;
+    background: #27292D;
+    border-radius: 50% 50% 0 0;
+    transform: rotate3D(1, 0, -.3, -25deg);
+    z-index: 0;
+    box-shadow: inset -21px 10px 55px 0 rgba(4, 7, 25, .5), inset 15px 0 35px 0 rgba(4, 7, 25, .5);
+}
+
+.t1-ear-right {
+    position: absolute;
+    width: 20%;
+    height: 85%;
+    top: -35%;
+    right: 3.7%;
+    background: #27292D;
+    border-radius: 50% 50% 0 0;
+    transform: rotate3D(1, 0, -.3, 25deg);
+    z-index: 0;
+    box-shadow: inset -21px 10px 50px 0 rgba(4, 7, 25, .5), inset 15px 0 25px 0 rgba(4, 7, 25, .5);
+}
+
+.t1-horn-left {
+    position: absolute;
+    width: 20%;
+    height: 80%;
+    top: -13%;
+    left: 23%;
+    background: #27292D;
+    border-radius: 100% 50% 0 0;
+    z-index: 0;
+    box-shadow: inset -21px 10px 55px 0 rgba(4, 7, 25, .5), inset 15px 0 35px 0 rgba(4, 7, 25, .5);
+}
+
+.t1-horn-right {
+    position: absolute;
+    width: 20%;
+    height: 80%;
+    top: -13%;
+    right: 23%;
+    background: #27292D;
+    border-radius: 50% 100% 0 0;
+    z-index: 0;
+    box-shadow: inset -21px 10px 50px 0 rgba(4, 7, 25, .5), inset 15px 0 25px 0 rgba(4, 7, 25, .5);
+}
+
+.t1-eye-left,
+.t1-eye-right {
+    position: absolute;
+    width: 30%;
+    height: 43%;
+    top: 30%;
+    background: #91B347;
+    border: 10px solid rgba(4, 7, 25, .85);
+    z-index: 3;
+    box-shadow: inset 15px 10px 25px 0 rgba(4, 7, 25, .5), inset -15px -10px 25px 0 rgba(4, 7, 25, .5);
+    overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+.t1-eye-left {
+    left: 10%;
+    border-radius: 20% 75%;
+}
+
+.t1-eye-right {
+    right: 10%;
+    border-radius: 75% 20%;
+}
+
+.t1-pupil {
+    position: absolute;
+    width: 40%;
+    height: 75%;
+    top: 20%;
+    background: #040719;
+    border-radius: 50%;
+    box-shadow: inset 5px 0 35px 0 rgba(255, 255, 255, .2);
+    transition: transform 0.02s linear;
+}
+
+.t1-shine {
+    position: absolute;
+    width: 20%;
+    height: 30%;
+    top: 10%;
+    left: 20%;
+    background: #FDFCFF;
+    border-radius: 50%;
+    transform: rotate(22deg);
+}
+
+.t1-eye-left .t1-pupil {
+    right: 20%;
+}
+
+.t1-eye-right .t1-pupil {
+    left: 20%;
+}
+
+.t1-left {
+    top: 80%;
+    left: 43%;
+    transform: rotate(-45deg);
+}
+
+.t1-right {
+    top: 80%;
+    right: 43%;
+    transform: rotate(45deg);
+}
+
+.t1-feathers-left,
+.t1-feathers-right {
+    position: absolute;
+    top: 35%;
+    width: 30%;
+    height: 50%;
+    z-index: 0;
+}
+
+.t1-feathers-left {
+    left: -15%;
+    transform: rotate3D(1, .5, .3, 55deg);
+}
+
+.t1-feathers-right {
+    right: -15%;
+    transform: rotate3D(1, -.5, .3, -55deg);
+}
+
+.t1-feather-top,
+.t1-feather-bottom {
+    position: absolute;
+    width: 100%;
+    height: 45%;
+    background: #27292D;
+    border-radius: 50%;
+    box-shadow: inset 0 -15px 55px -2px rgba(4, 7, 25, .7);
+}
+
+.t1-feather-top {
+    transform: rotateY(-22.5deg);
+}
+
+.t1-feather-bottom {
+    width: 90%;
+    bottom: 0;
+}
+
+.t1-feathers-left .t1-feather-bottom {
+    left: 5%;
+}
+
+.t1-feathers-right .t1-feather-bottom {
+    right: 5%;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ⚡ FASTER PLASMA CHARGING & BLINK EFFECTS
+   ══════════════════════════════════════════════════════════ */
+.t1-spike,
+.t1-nostril {
+    transition: background 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, border-color 0.2s ease;
+}
+
+.t1-spike {
+    position: absolute;
+    width: 45%;
+    height: 50%;
+    left: 27.5%;
+    background: #202225;
+    border-radius: 50% 50% 40% 40%;
+    transform: rotateX(15deg);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 4px 4px rgba(255, 255, 255, 0.1), 0 6px 8px rgba(0, 0, 0, 0.5);
+}
+
+.t1-nostril {
+    position: absolute;
+    width: 1%;
+    height: 20%;
+    background: #040719;
+    z-index: 3;
+    border-radius: 50%;
+}
+
+.charging-blast .t1-spike,
+.charging-blast .t1-nostril {
+    background: #00ffff !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 15px #00e5ff, inset 0 0 8px #ffffff !important;
+    animation: plasmaChargePulse 0.4s infinite alternate;
+}
+
+/* Sped up from 600ms total to 300ms total (100ms per blink) */
+.success-blinking .t1-spike,
+.success-blinking .t1-nostril {
+    background: #00ffff !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 25px #00e5ff, inset 0 0 12px #ffffff !important;
+    animation: plasmaBlinkFast 0.1s 3 ease-in-out !important;
+}
+
+@keyframes plasmaChargePulse {
+    0% {
+        filter: brightness(1) drop-shadow(0 0 5px #0055ff);
+    }
+
+    100% {
+        filter: brightness(1.5) drop-shadow(0 0 15px #00ffff);
+    }
+}
+
+@keyframes plasmaBlinkFast {
+
+    0%,
+    100% {
+        filter: brightness(1) drop-shadow(0 0 5px #0055ff);
+        opacity: 0.5;
+    }
+
+    50% {
+        filter: brightness(3) drop-shadow(0 0 40px #ffffff);
+        opacity: 1;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   🦅 WINGS ASSEMBLY
+   ══════════════════════════════════════════════════════════ */
+.t1-wings-container {
+    position: absolute;
+    width: 1516px;
+    height: 1145px;
+    top: -719px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    overflow: visible;
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
+}
+
+.t1-wings-container.hiding {
+    opacity: 0.1 !important;
+    filter: drop-shadow(0 0 0 transparent) !important;
+    transform: translateX(-50%) scale(0.96) !important;
+}
+
+.t1-svg-wing {
+    transform-box: fill-box;
+}
+
+.t1-svg-wing-left {
+    transform: translateX(35px);
+    transform-origin: right center;
+    animation: t1_vector_flap_left 1.2s ease-in-out infinite;
+}
+
+.t1-svg-wing-right {
+    transform: translateX(-35px);
+    transform-origin: left center;
+    animation: t1_vector_flap_right 1.2s ease-in-out infinite;
+}
+
+@keyframes t1_vector_flap_left {
+
+    0%,
+    100% {
+        transform: translateX(35px) rotate(-8deg) scaleY(1);
+    }
+
+    50% {
+        transform: translateX(35px) rotate(12deg) scaleY(0.92) translateY(-4px);
+    }
+}
+
+@keyframes t1_vector_flap_right {
+
+    0%,
+    100% {
+        transform: translateX(-35px) rotate(8deg) scaleY(1);
+    }
+
+    50% {
+        transform: translateX(-35px) rotate(-12deg) scaleY(0.92) translateY(-4px);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   🪶 TAIL ASSEMBLY
+   ══════════════════════════════════════════════════════════ */
+.t1-tail-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: -15px;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.t1-tail-main {
+    position: absolute;
+    top: 325px;
+    width: 40px;
+    height: 110px;
+    background: #27292D;
+    left: calc(50% - 20px);
+    border-radius: 50% 50% 45% 45%;
+    transform: rotate(24deg);
+    box-shadow: inset -10px 5px 20px rgba(4, 7, 25, .6), 0 8px 16px rgba(0, 0, 0, 0.6);
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.t1-tail-fin-left {
+    position: absolute;
+    width: 75px;
+    top: 400px;
+    height: 50px;
+    background: #27292D;
+    left: calc(50% - 78px);
+    bottom: 5px;
+    border-radius: 100% 15% 45% 15%;
+    transform: rotate(-16deg);
+    box-shadow: inset 5px -5px 12px rgba(0, 0, 0, 0.6);
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.t1-tail-fin-right {
+    position: absolute;
+    top: 411px;
+    width: 75px;
+    height: 50px;
+    background: #a50000;
+    right: calc(50% - 74px);
+    bottom: 5px;
+    border-radius: 15% 100% 15% 45%;
+    transform: rotate(31deg);
+    box-shadow: inset -5px -5px 12px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.t1-tail-fin-right::after {
+    content: '✕';
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    transform: rotate(-12deg);
+}
+
+.t1-tail-main.hiding,
+.t1-tail-fin-left.hiding,
+.t1-tail-fin-right.hiding {
+    opacity: 0 !important;
+    visibility: hidden;
+    filter: drop-shadow(0 0 0 transparent) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   🐾 HANDS OVERLAY LAYER
+   ══════════════════════════════════════════════════════════ */
+.t1-hands-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+    transition: opacity 0.3s ease;
+}
+
+.t1-hand {
+    position: absolute;
+    width: 52px;
+    height: 34px;
+    background: #27292D;
+    border-radius: 14px 14px 8px 8px;
+    box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.15), 0 6px 12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+    align-items: flex-end;
+}
+
+.t1-hand-left {
+    left: calc(50% - 173px);
+    top: -5px;
+    transform: rotate(-12deg);
+}
+
+.t1-hand-right {
+    right: calc(50% - 173px);
+    top: -5px;
+    transform: rotate(12deg);
+}
+
+.t1-claw {
+    width: 10px;
+    height: 17px;
+    background: #16171a;
+    border-radius: 50% 50% 30% 30%;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.t1-claw::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 3px;
+    width: 4px;
+    height: 5px;
+    background: #16171a;
+    border-radius: 50%;
+}
+
+/* ══════════════════════════════════════════════════════════
+   💼 AUTHENTICATION CARD & ERROR SHAKE
+   ══════════════════════════════════════════════════════════ */
+.login-card {
+    position: relative;
+    width: 340px;
+    background: #060811;
+    border: 2px solid #91B347;
+    border-radius: 24px;
+    padding: 35px 30px;
+    box-shadow: 0 0 25px rgba(145, 179, 71, 0.08), 0 30px 60px rgba(0, 0, 0, 0.9);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 10;
+}
+
+.login-card.slide-up {
+    transform: translateY(15px);
+}
+
+/* Rapid error shake for rejected login */
+.shake-error {
+    animation: errorShake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+    border-color: #fc8181 !important;
+    box-shadow: 0 0 35px rgba(252, 129, 129, 0.3) !important;
+}
+
+@keyframes errorShake {
+
+    10%,
+    90% {
+        transform: translate3d(-2px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(3px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-6px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(6px, 0, 0);
+    }
+}
+
+.card-title {
+    font-family: 'Cinzel', serif;
+    color: #fff;
+    text-align: center;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+
+.card-sub {
+    font-family: 'Space Mono', monospace;
+    color: #5a657c;
+    text-align: center;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+    margin-bottom: 30px;
+}
+
+.field-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.field-input {
+    width: 100%;
+    padding: 12px 4px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #232838;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.field-input:focus {
+    border-color: #91B347;
+}
+
+.field-label {
+    position: absolute;
+    left: 4px;
+    top: 12px;
+    color: #4a5568;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.field-input:focus~.field-label,
+.field-input:not(:placeholder-shown)~.field-label {
+    top: -10px;
+    font-size: 0.65rem;
+    color: #91B347;
+}
+
+.field-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #91B347, #718d32);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.field-input:focus~.field-line {
+    transform: scaleX(1);
+}
+
+.error-msg {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: #fc8181;
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+}
+
+.login-btn {
+    position: relative;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #008f66, #00b382);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 143, 102, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.login-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(0, 143, 102, 0.35);
+}
+
+.login-btn:active {
+    transform: translateY(1px);
+}
+
+/* ══════════════════════════════════════════════════════════
+   🌌 STARS & CLOUDS
+   ══════════════════════════════════════════════════════════ */
+.star {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.7);
+    animation-name: twinkle;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    z-index: 1;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.15;
+        transform: scale(0.7);
+        box-shadow: 0 0 4px 0px rgba(255, 255, 255, 0.3);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.25);
+        box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.85);
+    }
+}
+
+.cloud {
+    position: absolute;
+    background: radial-gradient(ellipse at 50% 50%, rgba(26, 56, 105, 0.85) 0%, rgba(12, 22, 46, 0.95) 55%, transparent 75%);
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(22px);
+    animation: cloud-drift 22s ease-in-out infinite alternate;
+    z-index: 5;
+}
+
+@keyframes cloud-drift {
+    0% {
+        transform: translateX(-2%) translateY(1%) scale(0.97);
+    }
+
+    100% {
+        transform: translateX(2%) translateY(-1%) scale(1.03);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   💬 DRAGON SPEECH BUBBLE & EYELIDS
+   ══════════════════════════════════════════════════════════ */
+.dragon-speech-bubble {
+    position: absolute;
+    top: -360px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #91B347;
+    color: #060811;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 40;
+    box-shadow: 0 4px 15px rgba(145, 179, 71, 0.4);
+    animation: bubblePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, bubbleFloat 3s ease-in-out infinite;
+}
+
+.dragon-speech-bubble::after {
+    content: '';
+    position: absolute;
+    top: 98%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: #91B347 transparent transparent transparent;
+}
+
+.t1-toothless-wrapper.hiding .dragon-speech-bubble {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    animation: none;
+}
+
+@keyframes bubblePop {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.5) translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1) translateY(0);
+    }
+}
+
+@keyframes bubbleFloat {
+
+    0%,
+    100% {
+        margin-top: 0;
+    }
+
+    50% {
+        margin-top: -8px;
+    }
+}
+
+.t1-eye-left::after,
+.t1-eye-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #27292D;
+    border-bottom: 5px solid #16171a;
+    transform: translateY(-100%);
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 10;
+}
+
+.t1-toothless-wrapper.hiding .t1-eye-left::after,
+.t1-toothless-wrapper.hiding .t1-eye-right::after {
+    transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════════════════════
+   💥 FASTER SUCCESS PLASMA BLAST 
+   ══════════════════════════════════════════════════════════ */
+.plasma-blast-wave {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 38%, #ffffff 0%, #00e5ff 25%, #0033aa 60%, transparent 100%);
+    transform-origin: 50% 38%;
+    animation: fullScreenBlastWave 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fullScreenBlastWave {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+        filter: blur(20px);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+        background: radial-gradient(circle at 50% 38%, #ffffff 0%, #00e5ff 40%, transparent 100%);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.3);
+        filter: blur(0px);
+        background: #ffffff;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2);
+        filter: blur(20px);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   📱 DYNAMIC VIEWPORT STABILIZATION
+   ══════════════════════════════════════════════════════════ */
+@media (max-height: 900px) {
+    .scene {
+        transform: scale(0.88);
+    }
+}
+
+@media (max-height: 780px) {
+    .scene {
+        transform: scale(0.78);
+    }
+}
+
+@media (max-height: 660px) {
+    .scene {
+        transform: scale(0.68);
+    }
+}
+
+@media (max-width: 1024px) {
+    .scene {
+        transform: scale(0.85);
+    }
+}
+
+@media (max-width: 768px) {
+    .scene {
+        transform: scale(0.75);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   ⚡ PURE-GLOW 3-CYCLE PLASMA BLINK (ZERO SHIFT)
+   ══════════════════════════════════════════════════════════ */
+.success-blinking .t1-nostril,
+.success-blinking .t1-spike {
+    /* 3 loops at 0.20s each matches the 600ms TypeScript timeout perfectly */
+    animation: stablePlasmaPulse 0.20s ease-in-out 3 !important;
+}
+
+@keyframes stablePlasmaPulse {
+    0%, 100% {
+        background: #00e5ff;
+        box-shadow: 0 0 15px #00e5ff, 0 0 30px #0033aa;
+        filter: brightness(1);
+    }
+    50% {
+        background: #ffffff;
+        box-shadow: 0 0 35px #ffffff, 0 0 65px #00e5ff, 0 0 100px #0033aa;
+        filter: brightness(2.2);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   ⏳ STAGGERED ENTRY TIMELINE OVERRIDES
+   ══════════════════════════════════════════════════════════ */
+
+/* 1. Login Card Enters First */
+.login-card-cinematic {
+    opacity: 0;
+    animation: formRiseEntrance 0.8s 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    z-index: 10;
+}
+
+/* 2. Toothless Head, Face, and Body Enter Second */
+.t1-toothless-wrapper.cinematic-dragon,
+.t1-hands-container.cinematic-dragon {
+    opacity: 0;
+    animation: dragonFadeIn 1.0s 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* 3. Wings and Tail Assembly Enter Last */
+.t1-wings-container.cinematic-dragon,
+.t1-tail-container.cinematic-dragon {
+    opacity: 0;
+    animation: dragonFadeIn 1.2s 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* ══════════════════════════════════════════════════════════
+   🔴 RED EYES ERROR STATE
+   ══════════════════════════════════════════════════════════ */
+.t1-eye-left.red-eyes,
+.t1-eye-right.red-eyes {
+    background: #ff1133 !important;
+    box-shadow: inset 0 0 20px #ff0000, 0 0 18px 4px #ff2244 !important;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.t1-eye-left.red-eyes .t1-pupil,
+.t1-eye-right.red-eyes .t1-pupil {
+    background: #110000 !important;
+    box-shadow: inset 0 0 8px #000000 !important;
+}
+

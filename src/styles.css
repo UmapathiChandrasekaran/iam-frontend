@@ -1,0 +1,7 @@
+/* 1. Directly inject Tailwind v4 core layers into the modern builder pipeline */
+@import "tailwindcss";
+
+/* 2. Register your custom physics timing using native CSS variables */
+:root {
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+}

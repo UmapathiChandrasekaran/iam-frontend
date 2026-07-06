@@ -1,0 +1,92 @@
+<div class="h-full w-full bg-[#05060e] text-[#cbd5e0] font-mono p-6">
+
+    <div class="mb-6 border-b border-gray-800 pb-4 flex justify-between items-end">
+        <h2 class="text-2xl text-[#91B347] tracking-widest font-bold">LDAP DIRECTORY PORTAL</h2>
+        <p class="text-xs text-gray-500 mt-2">ACTIVE DIRECTORY / OPENLDAP CONNECTION CONTROLS</p>
+    </div>
+
+    <div *ngIf="successMessage" class="bg-green-900/30 text-[#91B347] p-3 mb-4 rounded border border-[#91B347] text-sm">
+        {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="bg-red-900/30 text-red-500 p-3 mb-4 rounded border border-red-500 text-sm">
+        {{ errorMessage }}
+    </div>
+
+    <div class="space-y-6 max-w-4xl">
+
+        <div class="grid">
+            <div class="flex items-center space-x-3 p-4 bg-black border border-gray-800 rounded">
+                <input type="checkbox" id="ldapEnabled" [(ngModel)]="config.ldapEnabled"
+                    class="w-4 h-4 accent-[#91B347]">
+                <label for="ldapEnabled" class="text-sm font-bold tracking-wider">ENABLE LDAP AUTHENTICATION</label>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6 mt-6">
+
+                <div class="flex flex-col">
+                    <label class="text-xs text-gray-500 mb-1 tracking-wider">TARGET IP / SERVER URL</label>
+                    <input type="text" [(ngModel)]="config.ldapServerUrl"
+                        [placeholder]="config.ldapsSecureProtocol ? 'ldaps://192.168.1.50:636' : 'ldap://192.168.1.50:389'"
+                        class="bg-black border border-gray-800 p-3 text-white focus:outline-none focus:border-[#91B347] text-sm font-mono">
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="text-xs text-gray-500 mb-1 tracking-wider">BASE DN (Distinguished Name)</label>
+                    <input type="text" [(ngModel)]="config.ldapBaseDn" placeholder="dc=corporate,dc=internal"
+                        class="bg-black border border-gray-800 p-3 text-white focus:outline-none focus:border-[#91B347] text-sm font-mono">
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="text-xs text-gray-500 mb-1 tracking-wider">BIND DN (Service Account)</label>
+                    <input type="text" [(ngModel)]="config.ldapManagerDn"
+                        placeholder="cn=admin,dc=corporate,dc=internal"
+                        class="bg-black border border-gray-800 p-3 text-white focus:outline-none focus:border-[#91B347] text-sm font-mono">
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="text-xs text-gray-500 mb-1 tracking-wider">BIND PASSWORD</label>
+                    <input type="password" [(ngModel)]="config.ldapManagerPassword" placeholder="••••••••••••"
+                        class="bg-black border border-gray-800 p-3 text-white focus:outline-none focus:border-[#91B347] text-sm font-mono">
+                </div>
+
+            </div>
+
+            <div style="padding-top: 1rem; border-top: 1px solid #1e2238; margin-top: 1.5rem;">
+                <button (click)="onCommitChanges()" [disabled]="isSaving"
+                    style="background-color: #91B347; color: #05060e; border: none; padding: 0.9rem; font-weight: bold; font-family: monospace; letter-spacing: 2px; cursor: pointer; border-radius: 2px; font-size: 0.9rem; width: 100%; transition: opacity 0.2s;"
+                    [style.opacity]="isSaving ? '0.5' : '1'" onmouseover="if(!this.disabled) this.style.opacity='0.8'"
+                    onmouseout="if(!this.disabled) this.style.opacity='1'">
+                    {{ isSaving ? ' COMMITTING TO DATABASE... ' : ' SAVE DIRECTORY CONFIGURATIONS ' }}
+                </button>
+            </div>
+
+            <div class="mt-8 border border-[#3b82f6]/30 bg-[#3b82f6]/5 p-4 rounded text-sm text-[#8892b0]">
+                <h4 class="text-[#3b82f6] font-bold mb-3 tracking-wider"> FORUM_SYS EXTERNAL TEST IDENTITIES </h4>
+                <button (click)="onLoadSandboxDefaults()"
+                    style="background-color: transparent; color: #3b82f6; border: 1px solid #3b82f6; padding: 0.5rem 1rem; font-weight: bold; font-family: monospace; letter-spacing: 1px; cursor: pointer; border-radius: 2px; font-size: 0.75rem; transition: all 0.2s;"
+                    onmouseover="this.style.backgroundColor='rgba(59, 130, 246, 0.1)'"
+                    onmouseout="this.style.backgroundColor='transparent'">
+                    LOAD PUBLIC SANDBOX
+                </button>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-black/50 p-2 border border-gray-800 rounded">
+                        <span class="text-gray-500 text-xs block mb-1">UID / USERNAME</span>
+                        <span class="text-white font-bold">tesla</span>
+                        <div class="text-xs mt-1">Pass: <span class="text-gray-400">password</span></div>
+                    </div>
+                    <div class="bg-black/50 p-2 border border-gray-800 rounded">
+                        <span class="text-gray-500 text-xs block mb-1">UID / USERNAME</span>
+                        <span class="text-white font-bold">einstein</span>
+                        <div class="text-xs mt-1">Pass: <span class="text-gray-400">password</span></div>
+                    </div>
+                    <div class="bg-black/50 p-2 border border-gray-800 rounded">
+                        <span class="text-gray-500 text-xs block mb-1">UID / USERNAME</span>
+                        <span class="text-white font-bold">galieleo</span>
+                        <div class="text-xs mt-1">Pass: <span class="text-gray-400">password</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,209 @@
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+
+<div class="cinematic-viewport" [class.charging-blast]="isLoading" [class.success-blinking]="isSuccessBlinking">
+
+    <div class="intro-sequence">
+        <div class="intro-bolt"></div>
+        <div class="intro-energy"></div>
+    </div>
+
+    <div class="plasma-blast-wave" *ngIf="isSuccess"></div>
+
+    <div class="night-bg">
+        <div class="thunder-flash"></div>
+
+        <div *ngFor="let star of stars" class="star" [style.top]="star.top" [style.left]="star.left"
+            [style.width]="star.size" [style.height]="star.size" [style.animation-delay]="star.delay"
+            [style.animation-duration]="star.duration">
+        </div>
+
+        <div *ngFor="let cloud of clouds" class="cloud" [style.width]="cloud.width" [style.height]="cloud.height"
+            [style.left]="cloud.left" [style.bottom]="cloud.bottom" [style.animation-delay]="cloud.delay">
+        </div>
+    </div>
+
+    <div class="scene">
+
+        <svg class="t1-wings-container cinematic-dragon" [class.hiding]="isPasswordFocused" viewBox="0 0 559.25 517.72"
+            xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(37, -12)">
+                <g id="left_wing" class="t1-svg-wing t1-svg-wing-left">
+                    <path
+                        d="M499.68,446s-58.66,27.9-114.33-40.1c0,0-52.85,15.58-85.85,93.58,0,0,50.29-10.58,56.23,20.42,0,0,20-28.18,54.47-3.09,0,0,2.48-22.91,32.48-19.91l45.14-40.31Z"
+                        transform="translate(-298.67 -112.71)" fill="#727171" stroke="#070707" stroke-miterlimit="10" />
+                    <path
+                        d="M299.5,499.5c17-31,75.18-72.58,75.18-72.58,68,66,104.62,31,104.62,31,9.38-1,8.52-1.32,8.52-1.32"
+                        transform="translate(-298.67 -112.71)" fill="#727171" stroke="#070707" stroke-miterlimit="10" />
+                    <path
+                        d="M410.2,516.83c-3.48-.09-35.52-89.91-35.52-89.91s-14.89,91-18.95,93C355.73,519.92,376.9,495.16,410.2,516.83Z"
+                        transform="translate(-298.67 -112.71)" fill="#727171" stroke="#070707" stroke-miterlimit="10" />
+                    <path
+                        d="M447.5,447.5s-33.3-5.15-62.15-41.58c0,0-53.09,18.58-85.85,93.58,0,0,19.36-36.15,75.18-72.58,0,0,26.79,32.79,64.81,39.18,0,0,13.05,1.72,25-.6a77.07,77.07,0,0,0,23-9c9-7,9.88-5.92,13-11C500.87,444.9,447.11,448.05,447.5,447.5Z"
+                        transform="translate(-298.67 -112.71)" fill="#444" stroke="#000" stroke-miterlimit="10" />
+                </g>
+            </g>
+            <g transform="translate(37, -12)">
+                <g id="right_wing" class="t1-svg-wing t1-svg-wing-right">
+                    <path
+                        d="M579.5,445.6s58.66,27.9,114.33-40.1c0,0,46.67,5,79.67,83,0,0-44.11,0-50,31,0,0-20-28.19-54.47-3.09,0,0-2.48-22.91-32.48-19.91l-45.14-40.31Z"
+                        transform="translate(-298.67 -112.71)" fill="#727171" stroke="#070707" stroke-miterlimit="10" />
+                    <path d="M590.36,456.19s-.86.31,8.52,1.32c0,0,36.62,35,104.62-31,0,0,52,31,69,62"
+                        transform="translate(-298.67 -112.71)" fill="#727171" stroke="#070707" stroke-miterlimit="10" />
+                    <path
+                        d="M722.45,519.5c3,3.36-19-93-19-93s-32,89.81-35.52,89.91C668,516.41,696.39,490.5,722.45,519.5Z"
+                        transform="translate(-298.67 -112.71)" fill="#727171" stroke="#070707" stroke-miterlimit="10" />
+                    <path
+                        d="M632.5,447.5s-56.81-4.55-56-3c1.49,2.85,18.75,12.15,19,16,.16,2.42,27.38,7.94,41,6,5.94-.85,45.22-14.34,67-40,0,0,62,37.53,69,63.27,0,0-28.34-77.27-79.67-84.27C692.83,405.5,658.5,446.5,632.5,447.5Z"
+                        transform="translate(-298.67 -112.71)" fill="#444" stroke="#000" stroke-miterlimit="10" />
+                </g>
+            </g>
+        </svg>
+
+        <div class="t1-tail-container cinematic-dragon">
+            <div class="t1-tail-main" [class.hiding]="isPasswordFocused"></div>
+            <div class="t1-tail-fin-left" [class.hiding]="isPasswordFocused"></div>
+            <div class="t1-tail-fin-right" [class.hiding]="isPasswordFocused"></div>
+        </div>
+
+        <div class="login-card login-card-cinematic" [class.slide-up]="isPasswordFocused">
+
+            <h1 class="card-title" [style.color]="isMfaPromptRequired ? '#ffaa44' : '#91B347'">
+                {{ isMfaPromptRequired ? '[MFA_CHALLENGE]' : 'System Auth' }}
+            </h1>
+            <p class="card-sub">
+                {{ isMfaPromptRequired ? 'Sequence Locked: ' + challengeUsername : 'Enterprise Identity Portal' }}
+            </p>
+
+            <div *ngIf="!isMfaPromptRequired">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+                    <div class="field-group">
+                        <input type="text" class="field-input" formControlName="username" placeholder=" " id="username"
+                            (input)="onUsernameInput($event)" (focus)="onUsernameFocus()" (blur)="onUsernameBlur()" />
+                        <label class="field-label" for="username">Username</label>
+                    </div>
+
+                    <div class="field-group">
+                        <input type="password" class="field-input" formControlName="password" placeholder=" "
+                            id="password" (focus)="onPasswordFocus()" (blur)="onPasswordBlur()" />
+                        <label class="field-label" for="password">Password</label>
+                    </div>
+
+                    <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+                    <button type="submit" class="login-btn" [disabled]="isLoading">
+                        <span>{{ isLoading ? 'Authenticating…' : 'Log In' }}</span>
+                    </button>
+                    <div class="mt-5 text-center z-10 relative" *ngIf="oidcEnabled">
+                        <a (click)="toggleSsoTab()"
+                            class="text-xs font-monospace text-gray-500 hover:text-[#91B347] cursor-pointer transition-colors duration-300">
+                            [ Other Authorization Methods ]
+                        </a>
+
+                        <div *ngIf="showSsoTab" class="mt-3 flex justify-center gap-4 animate-fade-in">
+                            <button (click)="onSocialLoginClick()" type="button" title="System Override via Google"
+                                class="p-2 border border-gray-700 rounded-full bg-[#05060e] hover:bg-gray-800 hover:border-[#91B347] transition-all">
+                                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                                    <path fill="#4285F4"
+                                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                                    <path fill="#34A853"
+                                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                                    <path fill="#FBBC05"
+                                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                                    <path fill="#EA4335"
+                                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div *ngIf="isMfaPromptRequired" style="margin-top: 1.5rem;">
+                <p
+                    style="color: #8892b0; font-size: 0.75rem; line-height: 1.4; font-family: monospace; margin-bottom: 1.25rem;">
+                    Time-sliced dynamic handshake protection active. Input the 6-digit parameter signature from your
+                    token authorization device to unlock connection.
+                </p>
+
+                <div class="field-group" style="margin-bottom: 1.5rem;">
+                    <input type="text" class="field-input" [(ngModel)]="loginOtpCode" name="otpVerificationToken"
+                        maxlength="6" placeholder=" " id="otpCode"
+                        style="text-align: center; font-size: 1.4rem; letter-spacing: 6px; font-family: monospace; border-color: #ffaa44; color: #fff;"
+                        (focus)="isPasswordFocused = true" (blur)="isPasswordFocused = false" />
+                    <label class="field-label" for="otpCode"
+                        style="color: #ffaa44; width: 100%; text-align: center; left: 0;">Verification Code</label>
+                </div>
+
+                <div class="error-msg" *ngIf="errorMessage"
+                    style="color: #ff8888; border-color: #ff4444; margin-bottom: 1.25rem;">{{ errorMessage }}</div>
+
+                <button type="button" class="login-btn" style="background-color: #ffaa44; color: #0c0e1a;"
+                    [disabled]="isLoading" (click)="onVerifyMfaLoginPin()">
+                    <span>{{ isLoading ? 'Verifying Token Matrix…' : 'Verify Signature' }}</span>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="t1-toothless-wrapper cinematic-dragon" [class.hiding]="isPasswordFocused">
+            <div class="dragon-speech-bubble" *ngIf="currentUsername">
+                Hi, {{ currentUsername }}!
+            </div>
+
+            <div class='t1-box'>
+                <div class='t1-head'>
+                    <div class='t1-head-copy'></div>
+                    <div class='t1-chin'></div>
+                    <div class='t1-ear-left'></div>
+                    <div class='t1-ear-right'></div>
+
+                    <div class='t1-eye-left' [class.red-eyes]="isRedEyed">
+                        <div class='t1-pupil' [style.transform]="'translate(' + eyeX + 'px,' + eyeY + 'px)'"></div>
+                    </div>
+
+                    <div class='t1-eye-right' [class.red-eyes]="isRedEyed">
+                        <div class='t1-pupil' [style.transform]="'translate(' + eyeX + 'px,' + eyeY + 'px)'"></div>
+                    </div>
+
+                    <div class='t1-nostril t1-left'></div>
+                    <div class='t1-nostril t1-right'></div>
+
+                    <div class='t1-feathers-left'>
+                        <div class='t1-feather-top'></div>
+                        <div class='t1-feather-bottom'></div>
+                    </div>
+                    <div class='t1-feathers-right'>
+                        <div class='t1-feather-top'></div>
+                        <div class='t1-feather-bottom'></div>
+                    </div>
+
+                    <div class='t1-horn-left'></div>
+                    <div class='t1-horn-right'></div>
+
+                    <div class='t1-spikes'>
+                        <div class='t1-spike t1-one'></div>
+                        <div class='t1-spike t1-two'></div>
+                        <div class='t1-spike t1-three'></div>
+                        <div class='t1-spike t1-four'></div>
+                        <div class='t1-spike t1-five'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="t1-hands-container cinematic-dragon">
+            <div class="t1-hand t1-hand-left">
+                <div class="t1-claw"></div>
+                <div class="t1-claw"></div>
+                <div class="t1-claw"></div>
+            </div>
+            <div class="t1-hand t1-hand-right">
+                <div class="t1-claw"></div>
+                <div class="t1-claw"></div>
+                <div class="t1-claw"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

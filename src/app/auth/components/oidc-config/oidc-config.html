@@ -1,0 +1,59 @@
+<div class="h-full w-full bg-[#05060e] text-[#cbd5e0] font-mono p-6">
+
+    <div class="mb-6 border-b border-gray-800 pb-4 flex justify-between items-end">
+        <h2 class="text-2xl text-[#91B347] tracking-widest font-bold">OIDC FEDERATION PORTAL</h2>
+        <p class="text-xs text-gray-500 mt-2">EXTERNAL OAUTH2 / OPENID CONNECT CONTROLS</p>
+    </div>
+
+    <div *ngIf="statusMessage && !isError"
+        class="bg-green-900/30 text-[#91B347] p-3 mb-4 rounded border border-[#91B347] text-sm animate-pulse">
+        {{ statusMessage }}
+    </div>
+    <div *ngIf="statusMessage && isError"
+        class="bg-red-900/30 text-red-500 p-3 mb-4 rounded border border-red-500 text-sm">
+        {{ statusMessage }}
+    </div>
+
+    <form [formGroup]="oidcForm" (ngSubmit)="saveConfig()" class="space-y-6 max-w-4xl">
+        <div class="grid">
+
+            <div class="flex items-center space-x-3 p-4 bg-black border border-gray-800 rounded">
+                <input type="checkbox" id="oidcEnabled" formControlName="oidcEnabled"
+                    class="w-4 h-4 accent-[#91B347] cursor-pointer">
+                <label for="oidcEnabled" class="text-sm font-bold tracking-wider cursor-pointer">ENABLE OIDC
+                    FEDERATION</label>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6 mt-6">
+                <div class="flex flex-col">
+                    <label class="text-xs text-gray-500 mb-1 tracking-wider">CLIENT ID</label>
+                    <input type="text" formControlName="oidcClientId"
+                        placeholder="e.g., 103948573-xyz.apps.googleusercontent.com"
+                        class="bg-black border border-gray-800 p-3 text-white focus:outline-none focus:border-[#91B347] text-sm font-mono transition-colors">
+                </div>
+
+                <div class="flex flex-col">
+                    <label class="text-xs text-gray-500 mb-1 tracking-wider">CLIENT SECRET</label>
+                    <input type="password" formControlName="oidcClientSecret" placeholder="••••••••••••••••"
+                        class="bg-black border border-gray-800 p-3 text-white focus:outline-none focus:border-[#91B347] text-sm font-mono transition-colors">
+                </div>
+
+                <div class="flex flex-col col-span-2">
+                    <label class="text-xs text-gray-500 mb-1 tracking-wider">ISSUER URL</label>
+                    <input type="text" formControlName="oidcIssuerUrl" placeholder="e.g., https://accounts.google.com"
+                        class="bg-black border border-gray-800 p-3 text-white focus:outline-none focus:border-[#91B347] text-sm font-mono transition-colors">
+                </div>
+            </div>
+
+            <div style="padding-top: 1rem; border-top: 1px solid #1e2238; margin-top: 1.5rem;">
+                <button type="submit" [disabled]="isLoading"
+                    style="background-color: #91B347; color: #05060e; border: none; padding: 0.9rem; font-weight: bold; font-family: monospace; letter-spacing: 2px; cursor: pointer; border-radius: 2px; font-size: 0.9rem; width: 100%; transition: opacity 0.2s;"
+                    [style.opacity]="isLoading ? '0.5' : '1'" onmouseover="if(!this.disabled) this.style.opacity='0.8'"
+                    onmouseout="if(!this.disabled) this.style.opacity='1'">
+                    {{ isLoading ? ' TRANSMITTING SECURE PAYLOAD... ' : ' COMMIT OIDC FEDERATION PARAMETERS ' }}
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,384 @@
+<div
+  style="background-color: #05060e; color: #ffffff; min-height: 100vh; padding: 2.5rem; font-family: monospace; box-sizing: border-box;">
+
+  <div
+    style="border-bottom: 2px solid #91B347; padding-bottom: 1.25rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <button (click)="onNavigateBack()"
+        style="background-color: transparent; border: 1px solid #2d3354; color: #8892b0; padding: 0.4rem 0.85rem; cursor: pointer; font-family: monospace; border-radius: 2px; font-weight: bold; font-size: 0.8rem;">
+        &lt; back
+      </button>
+      <h2 style="color: #91B347; margin: 0; letter-spacing: 2px; font-size: 1.2rem;">SECURE IDENTITY GRID OPERATIONS
+        CONSOLE</h2>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <span [style.color]="isAdmin ? '#91B347' : '#ff4444'"
+        style="border: 1px solid currentColor; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: bold; letter-spacing: 1px;">
+        SECURITY_STATUS: {{ isAdmin ? 'SYS_ADMIN_ACTIVE' : 'STANDARD_CLIENT_ACCESS' }}
+      </span>
+      <button (click)="onLogoutSession()"
+        style="background-color: #240a0a; border: 1px solid #ff4444; color: #ff8888; font-family: monospace; padding: 0.4rem 0.9rem; font-weight: bold; cursor: pointer; border-radius: 2px; font-size: 0.8rem;">
+        LOGOUT
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage"
+    style="background-color: #2b0b0b; border: 1px solid #ff4444; color: #ff8888; padding: 0.85rem; margin-bottom: 1.5rem; font-weight: bold;">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="successMessage"
+    style="background-color: #0a210f; border: 1px solid #91B347; color: #91B347; padding: 0.85rem; margin-bottom: 1.5rem; font-weight: bold;">
+    {{ successMessage }}
+  </div>
+
+  <div style="display: grid; grid-template-columns: var(--dashboard-columns, 1fr); gap: 2rem;"
+    [style.--dashboard-columns]="isAdmin ? '350px 1fr' : '1fr'">
+
+    <div *ngIf="isAdmin"
+      style="background-color: #0c0e1a; border: 1px solid #1e2238; padding: 1.75rem; align-self: start; border-radius: 4px;">
+      <h3
+        style="margin-top: 0; color: #91B347; border-bottom: 1px solid #1a1e33; padding-bottom: 0.6rem; font-size: 1rem; letter-spacing: 1px;">
+        INITIALIZE ACCOUNT FORM
+      </h3>
+
+      <form #identityForm="ngForm" (ngSubmit)="onCommitForm(identityForm)">
+        <div style="margin-bottom: 1.25rem;">
+          <label
+            style="display: block; color: #8892b0; margin-bottom: 0.4rem; font-size: 0.8rem; font-weight: bold;">IDENTITY
+            USERNAME</label>
+          <input type="text" name="username" [(ngModel)]="formModel.username" required minlength="3" #uname="ngModel"
+            placeholder="Username Handle..."
+            style="width: 100%; background: #020306; border: 1px solid #2d3354; color: #fff; padding: 0.65rem; font-family: monospace; box-sizing: border-box; border-radius: 2px;">
+        </div>
+
+        <div style="margin-bottom: 1.25rem;">
+          <label
+            style="display: block; color: #8892b0; margin-bottom: 0.4rem; font-size: 0.8rem; font-weight: bold;">ACCOUNT
+            PASSWORD</label>
+          <input type="password" name="password" [(ngModel)]="formModel.password" required minlength="6"
+            #passkey="ngModel" placeholder="Secret Key Pass..."
+            style="width: 100%; background: #020306; border: 1px solid #2d3354; color: #fff; padding: 0.65rem; font-family: monospace; box-sizing: border-box; border-radius: 2px;">
+        </div>
+
+        <div style="margin-bottom: 1.75rem;">
+          <label
+            style="display: block; color: #8892b0; margin-bottom: 0.4rem; font-size: 0.8rem; font-weight: bold;">ASSIGN
+            ACCOUNT POLICY REALM</label>
+          <select name="userType" [(ngModel)]="formModel.userType" required
+            style="width: 100%; background: #020306; border: 1px solid #2d3354; color: #fff; padding: 0.65rem; font-family: monospace; box-sizing: border-box; cursor: pointer; border-radius: 2px;">
+            <option *ngFor="let opt of roleOptions" [value]="opt">{{ opt }}</option>
+          </select>
+        </div>
+
+        <button type="submit" [disabled]="identityForm.invalid"
+          style="width: 100%; background-color: #91B347; color: #05060e; border: none; padding: 0.8rem; font-weight: bold; cursor: pointer; font-family: monospace; letter-spacing: 1px; border-radius: 2px;">
+          COMMIT TO REGS
+        </button>
+      </form>
+    </div>
+
+    <div style="background-color: #0c0e1a; border: 1px solid #1e2238; padding: 1.5rem; border-radius: 4px;">
+      <h3 style="margin-top: 0; color: #91B347; margin-bottom: 1.5rem; font-size: 1rem; letter-spacing: 1px;">ACTIVE
+        IDENTITY INVENTORY MONITOR</h3>
+
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="background-color: #111428; color: #91B347; border-bottom: 2px solid #1e2238;">
+              <th style="padding: 1rem; font-size: 0.8rem; width: 60px;">ID</th>
+              <th style="padding: 1rem; font-size: 0.8rem;">PRINCIPAL HANDLES QUEUE</th>
+              <th style="padding: 1rem; font-size: 0.8rem;">SECURITY ACCESS REALM</th>
+              <th style="padding: 1rem; font-size: 0.8rem; text-align: right;">OPERATIONAL SECURITY SETTINGS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users" style="border-bottom: 1px solid #1a1e33;"
+              [style.background]="editingUserId === user.id ? '#131930' : 'transparent'">
+
+              <td style="padding: 1rem; color: #8892b0; font-weight: bold;">#{{ user.id }}</td>
+
+              <td style="padding: 1rem;">
+                <div style="color: #fff; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                  {{ user.username }}
+
+                  <span *ngIf="!user.externalUser"
+                    style="color: #91B347; font-size: 0.65rem; border: 1px solid #91B347; background: rgba(145,179,71,0.1); padding: 0.1rem 0.4rem; font-weight: bold; border-radius: 2px; letter-spacing: 0.5px;">
+                    [LOCAL]
+                  </span>
+                  <span *ngIf="user.externalUser"
+                    style="color: #3b82f6; font-size: 0.65rem; border: 1px solid #3b82f6; background: rgba(59,130,246,0.1); padding: 0.1rem 0.4rem; font-weight: bold; border-radius: 2px; letter-spacing: 0.5px;">
+                    [EXTERNAL]
+                  </span>
+
+                  <span *ngIf="user.totpEnabled"
+                    style="color: #ffaa44; font-size: 0.7rem; border: 1px solid #ffaa44; padding: 0.1rem 0.4rem; font-weight: bold; border-radius: 2px; letter-spacing: 0.5px;">
+                    [MFA_ACTIVE]
+                  </span>
+                </div>
+              </td>
+
+              <td style="padding: 1rem;">
+                <div *ngIf="editingUserId !== user.id">
+                  <code [style.color]="user.userType === 'ADMIN' ? '#91B347' : '#8892b0'"
+                    style="background: #0f1c11; padding: 0.25rem 0.6rem; border-radius: 2px; font-weight: bold;">
+                    {{ user.userType || 'USER' }}
+                  </code>
+                </div>
+                <div *ngIf="editingUserId === user.id">
+                  <select [(ngModel)]="editBuffer.userType" name="editRole" [disabled]="!isAdmin"
+                    style="background: #020306; border: 1px solid #91B347; color: #fff; padding: 0.45rem; font-family: monospace; border-radius: 2px; cursor: pointer;">
+                    <option value="USER">USER</option>
+                    <option value="ADMIN">ADMIN</option>
+                  </select>
+                </div>
+              </td>
+
+              <td style="padding: 1rem; text-align: right; white-space: nowrap;">
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end;">
+
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button *ngIf="isAdmin && user.username !== 'admin' && user.totpEnabled"
+                      (click)="onAdminDisableMfa(user.username)"
+                      style="background: #24140a; color: #ffaa44; border: 1px solid #ffaa44; padding: 0.45rem 0.9rem; cursor: pointer; font-family: monospace; font-size: 0.75rem; border-radius: 2px; font-weight: bold;">
+                      disable mfa
+                    </button>
+
+                    <div *ngIf="user.blocked">
+                      <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <span
+                          style="color: #ff4444; font-size: 0.8rem; font-style: italic; font-weight: bold; border: 1px solid #ff4444; padding: 0.2rem 0.5rem; border-radius: 2px;">
+                          [blocked]
+                        </span>
+                        <button *ngIf="isAdmin" (click)="onUnblockUser(user.id)"
+                          style="background: #0f2113; color: #91B347; border: 1px solid #91B347; padding: 0.45rem 0.9rem; cursor: pointer; font-family: monospace; font-size: 0.75rem; border-radius: 2px; font-weight: bold;">
+                          unblock
+                        </button>
+                      </div>
+                    </div>
+
+                    <div *ngIf="!user.blocked">
+                      <div *ngIf="canModifyRecord(user)">
+
+                        <div *ngIf="editingUserId !== user.id" style="display: flex; gap: 0.5rem;">
+                          <button (click)="onStartEdit(user)"
+                            style="background: #111428; color: #fff; border: 1px solid #2d3354; padding: 0.45rem 0.9rem; cursor: pointer; font-family: monospace; font-size: 0.75rem; border-radius: 2px; font-weight: bold;">
+                            edit
+                          </button>
+                          <button *ngIf="isAdmin && user.username !== 'admin'" (click)="onBlockUser(user.id)"
+                            style="background: #3a1c0e; color: #ffaa44; border: 1px solid #ffaa44; padding: 0.45rem 0.9rem; cursor: pointer; font-family: monospace; font-size: 0.75rem; border-radius: 2px; font-weight: bold;">
+                            block
+                          </button>
+                          <button *ngIf="isAdmin && user.username !== currentUsername" (click)="onDeleteUser(user.id)"
+                            style="background: #2b0b0b; color: #ff8888; border: 1px solid #ff4444; padding: 0.45rem 0.9rem; cursor: pointer; font-family: monospace; font-size: 0.75rem; border-radius: 2px; font-weight: bold;">
+                            delete
+                          </button>
+                        </div>
+
+                        <div *ngIf="editingUserId === user.id" style="display: flex; gap: 0.5rem;">
+                          <button (click)="onSaveEdit()"
+                            style="background: #91B347; color: #05060e; border: none; padding: 0.45rem 0.9rem; font-weight: bold; cursor: pointer; font-family: monospace; font-size: 0.75rem; border-radius: 2px;">
+                            save
+                          </button>
+                          <button (click)="onCancelEdit()"
+                            style="background: #222; color: #ccc; border: 1px solid #444; padding: 0.45rem 0.9rem; cursor: pointer; font-family: monospace; font-size: 0.75rem; border-radius: 2px;">
+                            cancel
+                          </button>
+                        </div>
+
+                      </div>
+
+                      <div *ngIf="!canModifyRecord(user)"
+                        style="color: #4f5b66; font-size: 0.8rem; padding-right: 0.5rem; font-style: italic;">
+                        [locked]
+                      </div>
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="isAdmin && user.username !== 'admin' && user.username !== currentUsername">
+
+                    <div *ngIf="!user.externalUser" style="display: flex; gap: 0.3rem; margin-top: 0.15rem;">
+                      <input type="password" [(ngModel)]="forcePasswordModel[user.id]" [name]="'forcePass_' + user.id"
+                        placeholder="Force Secret Key..."
+                        style="width: 140px; background: #020306; border: 1px solid #2d3354; color: #fff; padding: 0.35rem 0.5rem; font-family: monospace; font-size: 0.75rem; border-radius: 2px; box-sizing: border-box;">
+                      <button (click)="onAdminForcePassword(user.username, user.id)"
+                        style="background: #111428; color: #91B347; border: 1px solid #91B347; padding: 0.35rem 0.7rem; font-family: monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer; border-radius: 2px;">
+                        FORCE
+                      </button>
+                    </div>
+
+                    <div *ngIf="user.externalUser"
+                      style="display: flex; justify-content: flex-end; margin-top: 0.15rem;">
+                      <div
+                        style="padding: 0.35rem 0.5rem; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.4); color: #3b82f6; font-size: 0.70rem; font-weight: bold; border-radius: 2px;">
+                        [ EXTERNAL IDENTITY DELEGATION ]
+                      </div>
+                    </div>
+
+                  </ng-container>
+
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div
+    style="background-color: #0c0e1a; border: 1px solid #1e2238; padding: 1.75rem; margin-top: 2rem; border-radius: 4px;">
+    <div
+      style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1e33; padding-bottom: 0.6rem;">
+      <h3 style="margin: 0; color: #91B347; font-size: 1rem; letter-spacing: 1px;">
+        SELF-SERVICE POLICY MODULE: UPDATE SECRET SECURITY ACCESS KEY
+      </h3>
+      <span *ngIf="isRootAdminUser"
+        style="color: #ffaa44; border: 1px solid #ffaa44; font-size: 0.75rem; padding: 0.2rem 0.5rem; font-weight: bold; border-radius: 2px; letter-spacing: 1px;">
+        [SYSTEM_ROOT_IMMUTABLE_LOCK]
+      </span>
+    </div>
+
+    <div *ngIf="isRootAdminUser"
+      style="margin-top: 1.25rem; display: flex; align-items: center; gap: 1rem; background-color: #24140a; border: 1px solid #ffaa44; padding: 1rem; border-radius: 2px;">
+      <span style="color: #ffaa44; font-size: 1.2rem; font-weight: bold;">⚠</span>
+      <div>
+        <div style="color: #ffaa44; font-weight: bold; font-size: 0.85rem; letter-spacing: 0.5px;">
+          ROOT_CREDENTIAL_MODIFICATION_DISABLED</div>
+        <div style="color: #8892b0; font-size: 0.75rem; margin-top: 0.2rem;">The primary bootstrap handle credential
+          parameters cannot be modified via self-service modules. Refer to application initialization properties to
+          configure master system overrides.</div>
+      </div>
+    </div>
+
+    <div *ngIf="!isRootAdminUser && isCurrentUserExternal"
+      style="margin-top: 1.25rem; display: flex; align-items: center; gap: 1rem; background-color: #061224; border: 1px solid #3b82f6; padding: 1rem; border-radius: 2px;">
+      <span style="color: #3b82f6; font-size: 1.2rem; font-weight: bold;">⚠</span>
+      <div>
+        <div style="color: #3b82f6; font-weight: bold; font-size: 0.85rem; letter-spacing: 0.5px;">
+          SECURE_FEDERATION_ACTIVE_LOCK</div>
+        <div style="color: #8892b0; font-size: 0.75rem; margin-top: 0.2rem;">
+          Your identity is managed by an external Identity Provider (Google). Password modifications are restricted and
+          must be performed directly through your provider's security portal.
+        </div>
+      </div>
+    </div>
+
+    <form *ngIf="!isRootAdminUser && !isCurrentUserExternal" #selfChangeForm="ngForm" (ngSubmit)="onPasswordChange()">
+      <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.25rem; margin-bottom: 1.5rem;">
+        <div>
+          <label style="display: block; color: #8892b0; margin-bottom: 0.4rem; font-size: 0.8rem; font-weight: bold;">
+            VERIFY CURRENT PASSKEY
+          </label>
+          <input type="password" name="currentPassword" [(ngModel)]="currentPassword" required
+            placeholder="Verify Active Token..."
+            style="width: 100%; background: #020306; border: 1px solid #2d3354; color: #fff; padding: 0.65rem; font-family: monospace; box-sizing: border-box; border-radius: 2px;">
+        </div>
+        <div>
+          <label style="display: block; color: #8892b0; margin-bottom: 0.4rem; font-size: 0.8rem; font-weight: bold;">
+            GENERATE NEW SECURE PASSKEY
+          </label>
+          <input type="password" name="newPassword" [(ngModel)]="newPassword" required minlength="6"
+            placeholder="Assign New Registry Key..."
+            style="width: 100%; background: #020306; border: 1px solid #2d3354; color: #fff; padding: 0.65rem; font-family: monospace; box-sizing: border-box; border-radius: 2px;">
+        </div>
+      </div>
+      <button type="submit" [disabled]="selfChangeForm.invalid"
+        style="background-color: #91B347; color: #05060e; border: none; padding: 0.75rem 2rem; font-weight: bold; cursor: pointer; font-family: monospace; letter-spacing: 1px; border-radius: 2px;">
+        COMMIT MODIFICATION TASK
+      </button>
+    </form>
+  </div>
+
+  <div
+    style="background-color: #0c0e1a; border: 1px solid #1e2238; padding: 1.75rem; margin-top: 2rem; border-radius: 4px;">
+    <div
+      style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1e33; padding-bottom: 0.6rem;">
+      <h3 style="margin: 0; color: #91B347; font-size: 1rem; letter-spacing: 1px;">
+        SECURE PROTOCOL MODULE: MULTI-FACTOR AUTHENTICATION (TOTP)
+      </h3>
+      <span *ngIf="isRootAdminUser"
+        style="color: #ffaa44; border: 1px solid #ffaa44; font-size: 0.75rem; padding: 0.2rem 0.5rem; font-weight: bold; border-radius: 2px; letter-spacing: 1px;">
+        [SYSTEM_ROOT_MFA_LOCK]
+      </span>
+    </div>
+
+    <div *ngIf="isRootAdminUser"
+      style="margin-top: 1.25rem; display: flex; align-items: center; gap: 1rem; background-color: #24140a; border: 1px solid #ffaa44; padding: 1rem; border-radius: 2px;">
+      <span style="color: #ffaa44; font-size: 1.2rem; font-weight: bold;">⚠</span>
+      <div>
+        <div style="color: #ffaa44; font-weight: bold; font-size: 0.85rem; letter-spacing: 0.5px;">
+          ROOT_MFA_ENFORCEMENT_DISABLED</div>
+        <div style="color: #8892b0; font-size: 0.75rem; margin-top: 0.2rem;">The master administration profile is
+          anchored directly onto systemic infrastructure core variables. Dynamic multi-factor parameters are restricted
+          on this security container group.</div>
+      </div>
+    </div>
+
+    <div *ngIf="!isRootAdminUser && isCurrentUserExternal"
+      style="margin-top: 1.25rem; display: flex; align-items: center; gap: 1rem; background-color: #061224; border: 1px solid #3b82f6; padding: 1rem; border-radius: 2px;">
+      <span style="color: #3b82f6; font-size: 1.2rem; font-weight: bold;">⚠</span>
+      <div>
+        <div style="color: #3b82f6; font-weight: bold; font-size: 0.85rem; letter-spacing: 0.5px;">
+          EXTERNAL_MFA_ENFORCEMENT_LOCK</div>
+        <div style="color: #8892b0; font-size: 0.75rem; margin-top: 0.2rem;">Multi-Factor Authentication parameters are
+          delegated to your external Identity Provider. Local TOTP overrides are disabled for federated accounts.</div>
+      </div>
+    </div>
+
+    <div *ngIf="!isRootAdminUser && !isCurrentUserExternal">
+      <div *ngIf="!isTotpActive" style="margin-top: 1.25rem;">
+        <p style="color: #8892b0; font-size: 0.85rem; line-height: 1.5; margin: 0 0 1.25rem 0;">Scan the matrix QR
+          signature or register the key fallback parameter inside an authenticator app.</p>
+        <button *ngIf="!mfaSecret" (click)="onInitializeMfaSetup()"
+          style="background-color: transparent; border: 1px solid #91B347; color: #91B347; padding: 0.75rem 1.5rem; font-weight: bold; cursor: pointer; font-family: monospace; letter-spacing: 1px; border-radius: 2px;">INITIALIZE
+          MFA SEED GENERATION</button>
+        <div *ngIf="mfaSecret"
+          style="background-color: #05060e; border: 1px solid #2d3354; padding: 1.5rem; border-radius: 2px; margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
+          <div
+            style="background: #ffffff; padding: 0.75rem; border-radius: 4px; display: flex; justify-content: center; align-items: center; border: 2px solid #2d3354;">
+            <img [src]="qrCodeDataUrl" alt="MFA Registration Matrix"
+              style="width: 180px; height: 180px; display: block; image-rendering: pixelated;">
+          </div>
+          <div style="flex: 1; min-width: 280px;">
+            <div style="margin-bottom: 1.25rem;">
+              <label
+                style="display: block; color: #8892b0; font-size: 0.75rem; font-weight: bold; margin-bottom: 0.3rem;">MANUAL
+                SEED TEXT STRING</label>
+              <code
+                style="color: #ffaa44; font-size: 0.9rem; font-weight: bold; background: #111428; padding: 0.4rem 0.8rem; display: block; border-radius: 2px; border: 1px solid #1e2238;">{{ mfaConfigString }}</code>
+            </div>
+            <div style="max-width: 250px; margin-bottom: 1.25rem;">
+              <label
+                style="display: block; color: #8892b0; font-size: 0.75rem; font-weight: bold; margin-bottom: 0.4rem;">ENTER
+                6-DIGIT APP CODE TO VERIFY</label>
+              <input type="text" [(ngModel)]="mfaVerificationCode" name="verificationPinCode" maxlength="6"
+                placeholder="000000"
+                style="width: 100%; background: #020306; border: 1px solid #91B347; color: #fff; padding: 0.65rem; font-family: monospace; box-sizing: border-box; text-align: center; font-size: 1.2rem; letter-spacing: 4px; border-radius: 2px;">
+            </div>
+            <button (click)="onCommitMfaVerification()"
+              style="background-color: #91B347; color: #05060e; border: none; padding: 0.65rem 1.5rem; font-weight: bold; cursor: pointer; font-family: monospace; letter-spacing: 1px; border-radius: 2px;">VERIFY
+              AND ENFORCE MFA</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isTotpActive"
+        style="margin-top: 1.25rem; display: flex; align-items: center; justify-content: space-between; background-color: #0a210f; border: 1px solid #91B347; padding: 1rem; border-radius: 2px;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="color: #91B347; font-size: 1.2rem; font-weight: bold;">✔</span>
+          <div>
+            <div style="color: #91B347; font-weight: bold; font-size: 0.85rem; letter-spacing: 0.5px;">
+              MFA_ENFORCEMENT_CRITICAL_ACTIVE</div>
+            <div style="color: #8892b0; font-size: 0.75rem; margin-top: 0.2rem;">Multi-factor authentication is active
+              on this profile. Your connection is protected by a rolling cryptographic time-lock.</div>
+          </div>
+        </div>
+        <button (click)="onAdminDisableMfa(currentUsername)"
+          style="background-color: transparent; border: 1px solid #ff4444; color: #ff8888; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer; font-family: monospace; font-size: 0.75rem; letter-spacing: 1px; border-radius: 2px;">DISABLE
+          MFA</button>
+      </div>
+    </div>
+  </div>
+</div>

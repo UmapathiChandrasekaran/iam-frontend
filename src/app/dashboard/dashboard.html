@@ -1,0 +1,58 @@
+<div style="padding: 20px; font-family: monospace; background-color: #f8f9fa; min-height: 100vh;">
+  
+  <h2> Core Identity Management Console</h2>
+  <hr style="margin-bottom: 20px; border: 1px solid #ddd;" />
+
+  <div style="margin-bottom: 25px;">
+    <button (click)="onLogout()" style="padding: 8px 16px; background-color: #dc3545; color: white; border: none; cursor: pointer; font-weight: bold;">
+      Terminate Client Session & Logout
+    </button>
+  </div>
+
+  <div style="border: 2px solid #0056b3; padding: 15px; margin-bottom: 20px; background-color: #e6f0fa;">
+    <h3 style="margin-top: 0; color: #0056b3;">Active Stateless Session Token</h3>
+    <p><strong>Token Payload Indicator (X-IAM-SESSION-ID):</strong></p>
+    <code style="background: #fff; padding: 6px; display: block; border: 1px solid #ccc; overflow-x: auto; word-break: break-all;">
+      {{ currentToken || 'CRITICAL ERROR: No Session Token Captured' }}
+    </code>
+  </div>
+
+  <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; background-color: #fff;">
+    <h3 style="margin-top: 0;">AAA Protocol Connectors Status</h3>
+    <ul>
+      <li><strong>LDAP Enterprise Directory Store:</strong> <span style="color: #fd7e14; font-weight: bold;">PENDING BACKEND OVERHAUL (Chapter 5)</span></li>
+      <li><strong>Keycloak OAuth2 Authorization Provider:</strong> <span style="color: #fd7e14; font-weight: bold;">PENDING DOCKER CONTAINERIZATION (Chapter 5)</span></li>
+    </ul>
+  </div>
+
+  <div style="border: 1px solid #ccc; padding: 15px; background-color: #fff;">
+    <h3 style="margin-top: 0;">Simulated User Directory Records</h3>
+    <table border="1" cellpadding="8" style="width: 100%; text-align: left; border-collapse: collapse; font-size: 14px;">
+      <thead style="background-color: #f1f1f1;">
+        <tr>
+          <th>Distinguished Name (DN) / ID</th>
+          <th>Username Reference</th>
+          <th>Assigned Roles (RBAC)</th>
+          <th>Administrative Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userList">
+          <td><code>{{ user.dn }}</code></td>
+          <td>{{ user.username }}</td>
+          <td>
+            <span *ngFor="let role of user.roles" style="background: #eee; padding: 2px 6px; margin-right: 4px; border-radius: 3px; font-size: 12px;">
+              {{ role }}
+            </span>
+          </td>
+          <td>
+            <button (click)="onRevokeUser(user.username)" style="background: none; color: #dc3545; border: 1px solid #dc3545; padding: 4px 8px; cursor: pointer;">
+              Revoke Node
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -1,0 +1,64 @@
+<div
+    style="background-color: #05060e; color: #cbd5e0; min-height: 100vh; font-family: monospace; display: flex; flex-direction: column;">
+
+    <header
+        style="border-bottom: 2px solid #91B347; padding: 2rem 2.5rem 1.25rem 2.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+
+            <button (click)="goToGateway()"
+                style="background-color: transparent; border: 1px solid #2d3354; color: #8892b0; padding: 0.4rem 0.85rem; cursor: pointer; font-family: monospace; border-radius: 2px; font-weight: bold; font-size: 0.8rem; transition: all 0.2s;"
+                onmouseover="this.style.color='#ffffff'; this.style.borderColor='#8892b0'"
+                onmouseout="this.style.color='#8892b0'; this.style.borderColor='#2d3354'">
+                &lt; back
+            </button>
+
+            <h2 style="color: #91B347; margin: 0; letter-spacing: 2px; font-size: 1.2rem;">AAA CONFIGURATION WORKSPACE</h2>
+        </div>
+
+        <button (click)="onLogout()"
+            style="background-color: transparent; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); padding: 0.5rem 1rem; font-weight: bold; font-family: monospace; letter-spacing: 2px; cursor: pointer; border-radius: 2px; font-size: 0.8rem; transition: all 0.2s;"
+            onmouseover="this.style.backgroundColor='rgba(239, 68, 68, 0.1)'"
+            onmouseout="this.style.backgroundColor='transparent'">
+            LOGOUT
+        </button>
+    </header>
+
+    <ng-container *ngIf="isAdmin">
+
+        <div style="padding: 0 2.5rem; display: flex; gap: 1.5rem; border-bottom: 1px solid #1e2238;">
+            <button (click)="setTab('ldap')" [style.color]="activeTab === 'ldap' ? '#91B347' : '#8892b0'"
+                [style.borderBottom]="activeTab === 'ldap' ? '2px solid #91B347' : 'none'"
+                style="padding-bottom: 0.75rem; background: transparent; border: none; cursor: pointer; font-family: monospace; font-weight: bold; font-size: 0.85rem; transition: color 0.2s;">
+                DIRECTORY SERVICES (LDAP)
+            </button>
+
+            <button (click)="setTab('oidc')" [style.color]="activeTab === 'oidc' ? '#91B347' : '#8892b0'"
+                [style.borderBottom]="activeTab === 'oidc' ? '2px solid #91B347' : 'none'"
+                style="padding-bottom: 0.75rem; background: transparent; border: none; cursor: pointer; font-family: monospace; font-weight: bold; font-size: 0.85rem; transition: color 0.2s;">
+                FEDERATED IDENTITY (OIDC)
+            </button>
+        </div>
+
+        <div style="flex-grow: 1; padding: 2.5rem; overflow-y: auto;">
+
+            <div *ngIf="activeTab === 'ldap'">
+                <app-ldap-config></app-ldap-config>
+            </div>
+
+            <div *ngIf="activeTab === 'oidc'"
+                style="color: #4f5b66; font-size: 0.85rem; margin-top: 1rem; letter-spacing: 1px;">
+                <app-oidc-config></app-oidc-config>
+            </div>
+
+        </div>
+    </ng-container>
+
+    <div *ngIf="!isAdmin"
+        style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h2 style="color: #ef4444; font-weight: bold; font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 0.5rem;">[
+            ACCESS DENIED ]</h2>
+        <p style="color: #8892b0; font-size: 0.85rem; letter-spacing: 1px;">ADMINISTRATOR CLEARANCE REQUIRED FOR AAA
+            DIRECTORY CONFIGURATIONS.</p>
+    </div>
+
+</div>

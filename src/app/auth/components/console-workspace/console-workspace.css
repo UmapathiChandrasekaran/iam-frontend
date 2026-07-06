@@ -1,0 +1,137 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background-color: #04060a;
+    color: #e2e8f0;
+    font-family: 'Space Mono', 'Courier New', monospace;
+}
+
+.workspace-viewport {
+    padding: 0 3rem 4rem 3rem;
+}
+
+/* Header Navbar Styles */
+.console-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid #1e293b;
+    margin-bottom: 3.5rem;
+}
+
+.brand-logo {
+    color: #00ffcc;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 0.95rem;
+    text-shadow: 0 0 12px rgba(0, 255, 204, 0.2);
+}
+
+.terminate-btn {
+    background: transparent;
+    border: none;
+    color: #f43f5e;
+    font-family: inherit;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* Message Display Systems */
+.greeting-header h2 {
+    font-size: 2.2rem;
+    margin: 0 0 1rem 0;
+}
+
+.role-message-box {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: #0b0f19;
+    padding: 1.25rem;
+    border-radius: 0 8px 8px 0;
+    border-left: 4px solid;
+    margin-bottom: 4rem;
+}
+
+.role-message-box p { margin: 0; font-size: 0.95rem; color: #94a3b8; }
+
+.status-indicator {
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+}
+
+/* Role Profile Aesthetics */
+.admin-zone { border-color: #f43f5e; }
+.admin-zone .status-indicator { background: rgba(244, 63, 94, 0.15); color: #f43f5e; }
+
+.user-zone { border-color: #3b82f6; }
+.user-zone .status-indicator { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+
+/* Operational Display Cards Grid Layout */
+.operation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+}
+
+.console-card {
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease;
+}
+
+.card-header-block {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.icon-avatar { font-size: 1.8rem; }
+.card-desc { font-size: 0.88rem; color: #64748b; line-height: 1.6; flex-grow: 1; margin-bottom: 2.5rem; }
+
+.grid-action-btn {
+    background: transparent;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 0.8rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+/* Standard Interaction Hover Outlines */
+.console-card:not(.privileged-card):hover {
+    border-color: #38bdf8;
+    transform: translateY(-4px);
+}
+.console-card:not(.privileged-card):hover .grid-action-btn {
+    border-color: #38bdf8;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.02);
+}
+
+/* Restricted Action Hover Outlines */
+.privileged-card:hover {
+    border-color: #f43f5e;
+    transform: translateY(-4px);
+}
+.privileged-card:hover .admin-glow-btn {
+    border-color: #f43f5e;
+    color: #f43f5e;
+    background: rgba(244, 63, 94, 0.02);
+}
+.lock-glow { text-shadow: 0 0 10px rgba(244, 63, 94, 0.5); }
