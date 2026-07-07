@@ -4,7 +4,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { RoleLookupService } from '../../services/role.lookup.service';
 import { WorkspaceService } from '../../services/workspace.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
-import { Router, ActivatedRoute } from '@angular/router'; // Make sure ActivatedRoute is here!
+import { Router, ActivatedRoute } from '@angular/router'; 
 import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../../environments/environment';
 
@@ -30,13 +30,13 @@ export class LoginComponent implements OnInit {
   oidcEnabled: boolean = false;
   showSsoTab: boolean = false;
 
-  isRedEyed: boolean = false; //  Add this line to track error eye colors
+  isRedEyed: boolean = false; 
 
   // STAGE-2 MULTI-FACTOR AUTHENTICATION STATE TRACKERS
   isMfaPromptRequired: boolean = false;
   challengeUsername: string = '';
   loginOtpCode: string = '';
-
+  isCheckingStatus: boolean = true; 
   eyeX = 0;
   eyeY = 0;
   private readonly EYE_LIMIT = 9;
@@ -66,7 +66,21 @@ export class LoginComponent implements OnInit {
     this.generateStars(200);
     this.generateClouds(40);
 
-    // 🌟 THE FIX: Added && user.email to satisfy TypeScript Strict Mode
+    this.http.get<any>(this.apiUrl + '/api/public/oidc/status').subscribe({
+      next: (res) => {
+        this.oidcEnabled = res.enabled;
+        this.finalizeBootSequence(); // Proceed only when successful
+      },
+      error: () => {
+        this.oidcEnabled = false;
+        this.finalizeBootSequence(); // Proceed even on error to prevent infinite loading
+      }
+    });
+  }
+
+  private finalizeBootSequence(): void {
+    this.isCheckingStatus = false;
+
     this.socialAuthService.authState.subscribe((user) => {
       if (user && user.idToken && user.email) {
         console.log('[OIDC FEDERATION] Intercepted Identity Token for:', user.email);
@@ -74,17 +88,12 @@ export class LoginComponent implements OnInit {
       }
     });
 
-    this.http.get<any>(this.apiUrl+'/api/public/oidc/status').subscribe({
-      next: (res) => this.oidcEnabled = res.enabled,
-      error: () => this.oidcEnabled = false
-    });
-
+    // Now it is safe to check URL parameters for errors/tokens
     this.route.queryParams.subscribe(params => {
       const tokenFromUrl = params['token'];
-      const errorFromUrl = params['error']; // Catch the error parameter
+      const errorFromUrl = params['error']; 
       
       if (tokenFromUrl) {
-        // ... your existing token login logic ...
         this.authService.setSession('GOOGLE_USER', tokenFromUrl);
         this.ngZone.run(() => {
           this.router.navigate(['/gateway']);
