@@ -50,14 +50,14 @@ export class ConsoleWorkspace implements OnInit {
  resolveIdentityAndRoster(): void {
     this.workspaceService.getCurrentUser().subscribe({
       next: (me: any) => {
-        // 🟢 1. Synchronize the real username! 
+        // 1. Synchronize the real username! 
         // This overwrites 'GOOGLE_USER' with your actual Gmail address so the rest of the app works flawlessly.
         sessionStorage.setItem('X-IAM-USER', me.username);
 
         this.isAdmin = (me.userType === 'ADMIN');
         this.isTotpActive = me.totpEnabled === true;
         
-        // 🟢 2. Safely capture the external identity flag directly from the source!
+        // 2. Safely capture the external identity flag directly from the source!
         // We check both naming conventions just in case Jackson JSON serialization dropped the 'is' prefix
         this.isCurrentUserExternal = (me.externalUser === true || me.isExternalUser === true);
 
@@ -82,22 +82,34 @@ export class ConsoleWorkspace implements OnInit {
       next: (data: any[]) => {
         this.users = data;
         this.errorMessage = '';
-        
-        // 🟢 3. We removed the broken array search here because we already found the flag securely above!
-        
         this.cdr.detectChanges();
       },
       error: (err: any) => this.showFault('Identity inventory metrics collection failed.')
     });
   }
 
-  canModifyRecord(user: any): boolean {
+canModifyRecord(user: any): boolean {
+    // RULE 1: Root admin is untouched by anyone
     if (user.username === 'admin') {
       return false;
     }
-    if (this.isAdmin) {
+
+    // RULE 2: Root admin has all permissions (except editing root, handled above)
+    if (this.isRootAdminUser) {
       return true;
     }
+
+    // RULE 3 & 4: Normal Admin Logic
+    if (this.isAdmin && !this.isRootAdminUser) {
+      // RULE 3: An admin user cannot modify their own profile
+      if (user.username === this.currentUsername) {
+        return false;
+      }
+      // RULE 4: A normal admin CAN modify other normal admins and normal users
+      return true;
+    }
+
+    // RULE 5: Normal users can modify themselves (role dropdown will be locked in HTML)
     return user.username === this.currentUsername;
   }
 
@@ -129,7 +141,7 @@ export class ConsoleWorkspace implements OnInit {
     this.cdr.detectChanges();
   }
 
-  onSaveEdit(): void {
+ onSaveEdit(): void {
     this.workspaceService.editUser(this.editBuffer).subscribe({
       next: (res: string) => {
         const index = this.users.findIndex((u: any) => u.id === this.editingUserId);
@@ -138,7 +150,19 @@ export class ConsoleWorkspace implements OnInit {
         this.showSuccess('Modifications committed successfully.');
         this.cdr.detectChanges();
       },
-      error: (err: any) => this.showFault('Update sequence dropped.')
+      error: (err: any) => {
+        // Extract the exact "Access Denied" exception thrown by Spring Boot Rule 1-5
+        let extractedError = 'Update sequence dropped by security rules.';
+        
+        if (err.error) {
+          // Handles both plain text strings and JSON error objects
+          extractedError = typeof err.error === 'string' ? err.error : (err.error.message || err.error.error || extractedError);
+        }
+        
+        this.showFault(extractedError);
+        this.editingUserId = null;
+        this.cdr.detectChanges();
+      }
     });
   }
 

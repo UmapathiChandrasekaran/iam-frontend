@@ -100,7 +100,9 @@
               <td style="padding: 1rem; color: #8892b0; font-weight: bold;">#{{ user.id }}</td>
 
               <td style="padding: 1rem;">
-                <div style="color: #fff; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+
+                <div *ngIf="editingUserId !== user.id"
+                  style="color: #fff; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                   {{ user.username }}
 
                   <span *ngIf="!user.externalUser"
@@ -111,27 +113,40 @@
                     style="color: #3b82f6; font-size: 0.65rem; border: 1px solid #3b82f6; background: rgba(59,130,246,0.1); padding: 0.1rem 0.4rem; font-weight: bold; border-radius: 2px; letter-spacing: 0.5px;">
                     [EXTERNAL]
                   </span>
-
                   <span *ngIf="user.totpEnabled"
                     style="color: #ffaa44; font-size: 0.7rem; border: 1px solid #ffaa44; padding: 0.1rem 0.4rem; font-weight: bold; border-radius: 2px; letter-spacing: 0.5px;">
                     [MFA_ACTIVE]
                   </span>
                 </div>
+
+                <div *ngIf="editingUserId === user.id" style="display: flex; gap: 0.5rem; align-items: center;">
+                  <input type="text" [(ngModel)]="editBuffer.username"
+                    style="background: #020306; border: 1px solid #91B347; color: #fff; padding: 0.45rem; font-family: monospace; border-radius: 2px; width: 100%;">
+                </div>
+
               </td>
 
               <td style="padding: 1rem;">
+
                 <div *ngIf="editingUserId !== user.id">
                   <code [style.color]="user.userType === 'ADMIN' ? '#91B347' : '#8892b0'"
                     style="background: #0f1c11; padding: 0.25rem 0.6rem; border-radius: 2px; font-weight: bold;">
                     {{ user.userType || 'USER' }}
                   </code>
                 </div>
+
                 <div *ngIf="editingUserId === user.id">
+
                   <select [(ngModel)]="editBuffer.userType" name="editRole" [disabled]="!isAdmin"
-                    style="background: #020306; border: 1px solid #91B347; color: #fff; padding: 0.45rem; font-family: monospace; border-radius: 2px; cursor: pointer;">
+                    style="background: #020306; border: 1px solid #91B347; color: #fff; padding: 0.45rem; font-family: monospace; border-radius: 2px; cursor: pointer; width: 100%;">
                     <option value="USER">USER</option>
                     <option value="ADMIN">ADMIN</option>
                   </select>
+
+                  <div *ngIf="!isAdmin" style="color: #ffaa44; font-size: 0.65rem; margin-top: 5px; font-weight: bold;">
+                    [ROLE LOCKED: ADMIN ACCESS REQUIRED]
+                  </div>
+
                 </div>
               </td>
 
